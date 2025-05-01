@@ -1,20 +1,23 @@
 FROM node:20-alpine AS build
 
-# Create app directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json ./
-COPY tsconfig.json ./
+# Copy root package.json for workspace context during install
+COPY package.json ./ 
+
+# Copy server-specific files needed for install/build
 COPY src/scientific-method/package.json ./src/scientific-method/
 COPY src/scientific-method/tsconfig.json ./src/scientific-method/
 COPY src/scientific-method/*.ts ./src/scientific-method/
 
-# Install dependencies
+# Install dependencies (needs root package.json)
 RUN npm install
 
-# Build the server
-RUN npm run build --workspace=@cognitive-enhancement-mcp/scientific-method
+# Copy root tsconfig.json *just before* build command needs it
+COPY tsconfig.json ./ 
+
+# Build the server (needs root tsconfig.json)
+RUN npm run build --workspace=@waldzellai/scientific-method
 
 FROM node:20-alpine AS runtime
 
@@ -24,8 +27,10 @@ WORKDIR /app
 COPY --from=build /app/src/scientific-method/dist ./dist
 COPY --from=build /app/src/scientific-method/package.json ./
 
+ENV NODE_ENV=production
+
 # Install only production dependencies
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --ignore-scripts
 
 # Set up entrypoint
 ENTRYPOINT ["node", "dist/index.js"]
