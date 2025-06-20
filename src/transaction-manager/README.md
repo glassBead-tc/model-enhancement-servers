@@ -1,4 +1,4 @@
-# Visual Reasoning MCP Server
+# Transaction MCP Server
 
 ## Motivation
 

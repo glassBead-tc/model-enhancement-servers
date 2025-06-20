@@ -57,8 +57,8 @@ docker run --rm -i waldzellai/structured-argumentation
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/cognitive-enhancement-mcp/servers.git
-cd servers
+git clone https://github.com/waldzellai/model-enhancement-servers.git
+cd model-enhancement-servers
 npm install
 ```
 
