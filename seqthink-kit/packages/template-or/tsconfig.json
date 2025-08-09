@@ -1,7 +1,1 @@
-{
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "outDir": "dist"
-  },
-  "include": ["src/**/*.ts", "manifest.ts", "files/**/*", "tests/**/*.ts"]
-}
+{ "extends": "../../tsconfig.base.json", "include": ["manifest.ts", "files"], "compilerOptions": { "rootDir": ".", "outDir": "dist" } }
